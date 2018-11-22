@@ -1,0 +1,26 @@
+{
+  "name": "blurts-breaches-diff",
+  "description": "JSON diff of breaches",
+  "version": "1.0.0",
+  "author": "Peter deHaan <peter@deseloper.com> (https://about.me/peterdehaan)",
+  "bin": "cli.js",
+  "bugs": {
+    "url": "https://github.com/pdehaan/blurts-breaches-diff/issues"
+  },
+  "dependencies": {
+    "got": "9.3.2",
+    "json-diff": "0.5.3"
+  },
+  "homepage": "https://github.com/pdehaan/blurts-breaches-diff#readme",
+  "keywords": [],
+  "license": "MPL-2.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pdehaan/blurts-breaches-diff.git"
+  },
+  "scripts": {
+    "start": "node index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
