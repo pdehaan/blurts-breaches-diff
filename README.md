@@ -1,54 +1,69 @@
 # blurts-breaches-diff
 
-JSON diff of breaches
+JSON diff of breaches.
+
+Pretty basic. Pointless, almost. But lets me easily see if there have been any recent breaches added to the site.
 
 ## Usage:
 
 ```sh
-$ npx pdehaan/blurts-breaches-diff
+# Fetch the /hibp/breaches endpoint from monitor.firefox.com and display any
+# breaches in the past 4 days (if any).
+$ npx pdehaan/blurts-breaches-diff -4d
 ```
 
-The first time you run the script you'll probably get a message like the
-following, since you presumably don't have a local "./breaches.json" file:
+By default, the script will return all breaches in the past 7 days, unless you specify some other time on the CLI.
+Note that the script uses [**ms**](http://npm.im/ms) for converting time formats (7d, 1w, 10h) into milliseconds,
+so feel free to go crazy.
 
-> Generating 'breaches.json' from https://haveibeenpwned.com/api/v2/breaches...
+**NOTE:** The script will run `Math.abs()` on the value returned by `ms()`, so essentially "-7d" and "7d" ar equivalent.
 
-Any subsequent time you run <kbd>$ npx pdehaan/blurts-breaches-diff</kbd> you
-should see some semi-cryptic output of any diffs from your cached ./breaches.json
-file and the file scraped from the https://haveibeenpwned.com/api/v2/breaches endpoint.
+### Output:
 
-For example, here's what the output would look like if a new breach was added but not
-present in the cached breaches.json file:
+```sh
+$ npx pdehaan/blurts-breaches-diff -3d
 
-```json
-[
-  [
-    "+",
+{
+  "now": "2018-11-22T19:37:25.855Z",
+  "serverLastModified": "2018-11-20T21:22:09.000Z",
+  "since": "2018-11-19T19:37:25.474Z",
+  "breaches": [
     {
-      "Name": "LinkedIn",
-      "Title": "LinkedIn",
-      "Domain": "linkedin.com",
-      "BreachDate": "2012-05-05",
-      "AddedDate": "2016-05-21T21:35:40Z",
-      "ModifiedDate": "2016-05-21T21:35:40Z",
-      "PwnCount": 164611595,
-      "Description": "In May 2016, <a href=\"https://www.troyhunt.com/observations-and-thoughts-on-the-linkedin-data-breach\" target=\"_blank\" rel=\"noopener\">LinkedIn had 164 million email addresses and passwords exposed</a>. Originally hacked in 2012, the data remained out of sight until being offered for sale on a dark market site 4 years later. The passwords in the breach were stored as SHA1 hashes without salt,the vast majority of which were quickly cracked in the days following the release of the data.",
-      "LogoType": "svg",
+      "Name": "HTHStudios",
+      "Title": "HTH Studios",
+      "Domain": "hthstudios.com",
+      "BreachDate": "2018-08-24",
+      "AddedDate": "2018-11-20T21:22:09Z",
+      "ModifiedDate": "2018-11-20T21:22:09Z",
+      "PwnCount": 411755,
+      "Description": "In August 2018, the adult furry interactive game creator <a href=\"https://hthstudios.com/\" target=\"_blank\" rel=\"noopener\">HTH Studios</a> suffered a data breach impacting mulitple repositories of customer data. Several months later, the data surfaced on a popular hacking forum and included 411k unique email addresses along with physical and IP addresses, names, orders, salted SHA-1 and salted MD5 hashes. HTH Studios is aware of the incident.",
+      "LogoType": "png",
       "DataClasses": [
-        "Email addresses",
-        "Passwords"
+        "browser-user-agent-details",
+        "dates-of-birth",
+        "email-addresses",
+        "ip-addresses",
+        "names",
+        "phone-numbers",
+        "physical-addresses",
+        "purchases",
+        "usernames"
       ],
       "IsVerified": true,
       "IsFabricated": false,
-      "IsSensitive": false,
+      "IsSensitive": true,
       "IsRetired": false,
       "IsSpamList": false
     }
   ]
-]
+}
 ```
 
-And if no new breaches have been discovered (and none of the other breach data has
-mysteriously changed), you should see some output similar to:
+The response should return an object with four keys:
 
-> No changes found in https://haveibeenpwned.com/api/v2/breaches
+- `now`: The current time that you made the request.
+- `serverLastModified`: The last time the server loaded a new breach from HIBP.
+- `since`: The current time, minus the specified duration (ie: "3d", "1w").
+- `breaches`: An array of breaches for the specified duration (or an empty array).
+
+**NOTE:** Unlike HIBP, the `breaches[]` returned from the Firefox Monitor /hibp/breaches endpoint will slugify each of the items in the `DataClasses` array (since we do translations on those strings).

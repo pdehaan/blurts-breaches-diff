@@ -1,26 +1,13 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
+const ms = require("ms");
 const lib = require("./index");
 
-main();
+const [, , argv] = process.argv;
 
-async function main() {
-  const newBreaches = await lib.getBreaches();
-  if (fs.existsSync("breaches.json")) {
-    const _oldBreaches = fs.readFileSync("breaches.json", "utf-8");
-    const oldBreaches = JSON.parse(_oldBreaches);
-    const breachDiff = (lib.jsonDiff(newBreaches, oldBreaches) || [])
-      .filter(([key, value]) => key.trim());
-    if (breachDiff.length) {
-      console.log(JSON.stringify(breachDiff, null, 2));
-      process.exitCode = 1;
-    } else {
-      console.info(`No changes found in ${lib.BREACH_API_URL}`);
-    }
-  } else {
-    console.error(`Generating 'breaches.json' from ${lib.BREACH_API_URL}...`);
-  }
+main(argv);
 
-  fs.writeFileSync("breaches.json", JSON.stringify(newBreaches, null, 2) + "\n");
+async function main(since="7d") {
+  const newBreaches = await lib.getBreaches(since);
+  console.log(JSON.stringify(newBreaches, null, 2));
 }
