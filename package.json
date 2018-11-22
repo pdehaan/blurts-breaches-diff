@@ -8,6 +8,7 @@
     "url": "https://github.com/pdehaan/blurts-breaches-diff/issues"
   },
   "dependencies": {
+    "check-links": "1.1.4",
     "got": "9.3.2",
     "ms": "2.1.1"
   },
