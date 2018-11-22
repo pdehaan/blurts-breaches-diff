@@ -9,19 +9,23 @@ Pretty basic. Pointless, almost. But lets me easily see if there have been any r
 ```sh
 # Fetch the /hibp/breaches endpoint from monitor.firefox.com and display any
 # breaches in the past 4 days (if any).
-$ npx pdehaan/blurts-breaches-diff -4d
+$ npx pdehaan/blurts-breaches-diff --since=-4d
 ```
 
-By default, the script will return all breaches in the past 7 days, unless you specify some other time on the CLI.
-Note that the script uses [**ms**](http://npm.im/ms) for converting time formats (7d, 1w, 10h) into milliseconds,
-so feel free to go crazy.
+### Flags:
 
-**NOTE:** The script will run `Math.abs()` on the value returned by `ms()`, so essentially "-7d" and "7d" ar equivalent.
+Currently there are two supported CLI flags:
+
+1. `--since`: String &mdash; Relative time format. For example, you can specify `--since=-3d` for all breaches within the past 2 days, or `--since=1w` for all breaches within the past 1 week. Note that the script uses [**ms**](http://npm.im/ms) for converting time formats (7d, 1w, 10h) into milliseconds,
+so feel free to go crazy. Defaults to **1 week**.
+1. `--server`: String &mdash; The server to scrape the breaches API and resolve images to. For example, you can specify `--server=https://monitor.firefox.com` (default) and it will check against the production server, or you can specify `--server=https://fx-breach-alerts.herokuapp.com` to check against the development/l10n Heroku server. Defaults to "https://monitor.firefox.com".
+
+**NOTE:** When specifying the `--since` argument, the script will run `Math.abs()` on the value returned by `ms()`, so essentially "-7d" and "7d" are equivalent.
 
 ### Output:
 
 ```sh
-$ npx pdehaan/blurts-breaches-diff -1d
+$ npx pdehaan/blurts-breaches-diff --since=-1d
 
 {
   "now": "2018-11-22T20:46:32.411Z",

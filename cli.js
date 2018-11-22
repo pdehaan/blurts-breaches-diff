@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 
-const ms = require("ms");
-const lib = require("./index");
+const {args, getBreaches} = require("./index");
 
-const [, , argv] = process.argv;
+const flags = args();
 
-main(argv);
+main(flags.since, flags.server);
 
-async function main(since="7d") {
-  const newBreaches = await lib.getBreaches(since);
-  console.log(JSON.stringify(newBreaches, null, 2));
+async function main(modifiedSince, server) {
+  const recentBreaches = await getBreaches(modifiedSince, server);
+  console.log(JSON.stringify(recentBreaches, null, 2));
 }
