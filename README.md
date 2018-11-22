@@ -21,49 +21,56 @@ so feel free to go crazy.
 ### Output:
 
 ```sh
-$ npx pdehaan/blurts-breaches-diff -3d
+$ npx pdehaan/blurts-breaches-diff -1d
 
 {
-  "now": "2018-11-22T19:37:25.855Z",
-  "serverLastModified": "2018-11-20T21:22:09.000Z",
-  "since": "2018-11-19T19:37:25.474Z",
+  "now": "2018-11-22T20:46:32.411Z",
+  "serverLastModified": "2018-11-22T19:43:06.000Z",
+  "since": "2018-11-21T20:46:31.884Z",
   "breaches": [
     {
-      "Name": "HTHStudios",
-      "Title": "HTH Studios",
-      "Domain": "hthstudios.com",
-      "BreachDate": "2018-08-24",
-      "AddedDate": "2018-11-20T21:22:09Z",
-      "ModifiedDate": "2018-11-20T21:22:09Z",
-      "PwnCount": 411755,
-      "Description": "In August 2018, the adult furry interactive game creator <a href=\"https://hthstudios.com/\" target=\"_blank\" rel=\"noopener\">HTH Studios</a> suffered a data breach impacting mulitple repositories of customer data. Several months later, the data surfaced on a popular hacking forum and included 411k unique email addresses along with physical and IP addresses, names, orders, salted SHA-1 and salted MD5 hashes. HTH Studios is aware of the incident.",
+      "Name": "Adapt",
+      "Title": "Adapt",
+      "Domain": "adapt.io",
+      "BreachDate": "2018-11-05",
+      "AddedDate": "2018-11-22T19:43:06Z",
+      "ModifiedDate": "2018-11-22T19:43:06Z",
+      "PwnCount": 9363740,
+      "Description": "In November 2018, <a href=\"https://blog.hackenproof.com/industry-news/another-decision-makers-database-leaked/\" target=\"_blank\" rel=\"noopener\">security researcher Bob Diachenko identified an unprotected database hosted by data aggregator &quot;Adapt&quot;</a>. A provider of &quot;Fresh Quality Contacts&quot;, the service exposed over 9.3M unique records of individuals and employer information including their names, employers, job titles, contact information and data relating to the employer including organisation description, size and revenue. No response was received from Adapt when contacted.",
       "LogoType": "png",
       "DataClasses": [
-        "browser-user-agent-details",
-        "dates-of-birth",
         "email-addresses",
-        "ip-addresses",
+        "employers",
+        "job-titles",
         "names",
         "phone-numbers",
         "physical-addresses",
-        "purchases",
-        "usernames"
+        "social-media-profiles"
       ],
       "IsVerified": true,
       "IsFabricated": false,
-      "IsSensitive": true,
+      "IsSensitive": false,
       "IsRetired": false,
       "IsSpamList": false
+    }
+  ],
+  "missingLogos": [
+    {
+      "url": "https://monitor.firefox.com/img/logos/Adapt.png",
+      "status": "dead",
+      "statusCode": 404
     }
   ]
 }
 ```
 
-The response should return an object with four keys:
+The response should return an object with the following keys:
 
 - `now`: The current time that you made the request.
 - `serverLastModified`: The last time the server loaded a new breach from HIBP.
 - `since`: The current time, minus the specified duration (ie: "3d", "1w").
 - `breaches`: An array of breaches for the specified duration (or an empty array).
+- `missingLogos`: An array of missing PNG/SVG logos (on production) for recent breaches. This may yield false-positives if the breach logo has already been updated on
+  the development server but not yet deployed on stage.
 
 **NOTE:** Unlike HIBP, the `breaches[]` returned from the Firefox Monitor /hibp/breaches endpoint will slugify each of the items in the `DataClasses` array (since we do translations on those strings).
