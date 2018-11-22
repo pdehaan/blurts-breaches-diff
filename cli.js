@@ -1,26 +1,29 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
 const lib = require("./index");
 
 main();
 
+function deleteDataClasses(breach) {
+  delete breach.DataClasses;
+  return breach;
+}
+
 async function main() {
-  const newBreaches = await lib.getBreaches();
-  if (fs.existsSync("breaches.json")) {
-    const _oldBreaches = fs.readFileSync("breaches.json", "utf-8");
-    const oldBreaches = JSON.parse(_oldBreaches);
-    const breachDiff = (lib.jsonDiff(newBreaches, oldBreaches) || [])
-      .filter(([key, value]) => key.trim());
+  const hibpBreaches = (await lib.getHIBPBreaches())
+    .map(deleteDataClasses);
+  const monitorBreaches = (await lib.getMonitorBreaches())
+    .map(deleteDataClasses);
+  
+  // Returns `undefined` or an array of diffs.
+  let breachDiff = lib.jsonDiff(hibpBreaches, monitorBreaches);
+
+  if (breachDiff) {
+      breachDiff = breachDiff.filter(([key, value]) => key.trim());
     if (breachDiff.length) {
       console.log(JSON.stringify(breachDiff, null, 2));
-      process.exitCode = 1;
-    } else {
-      console.info(`No changes found in ${lib.BREACH_API_URL}`);
+      process.exit(1);
     }
-  } else {
-    console.error(`Generating 'breaches.json' from ${lib.BREACH_API_URL}...`);
   }
-
-  fs.writeFileSync("breaches.json", JSON.stringify(newBreaches, null, 2) + "\n");
+  console.info(`No changes found in ${lib.HIBP_BREACH_URL}`);
 }
