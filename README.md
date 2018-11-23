@@ -14,11 +14,12 @@ $ npx pdehaan/blurts-breaches-diff --since=-4d
 
 ### Flags:
 
-Currently there are two supported CLI flags:
+Currently there are three supported CLI flags:
 
+1. `--env`: String &mdash; Shortcut for setting the `--server` flag, since I can never remember/type full URLs. Options: "l10n", "dev", "stage", or "prod".
+1. `--server`: String &mdash; The server to scrape the breaches API and resolve images to. For example, you can specify `--server=https://monitor.firefox.com` (default) and it will check against the production server, or you can specify `--server=https://fx-breach-alerts.herokuapp.com` to check against the development/l10n Heroku server. Defaults to "https://monitor.firefox.com".
 1. `--since`: String &mdash; Relative time format. For example, you can specify `--since=-3d` for all breaches within the past 2 days, or `--since=1w` for all breaches within the past 1 week. Note that the script uses [**ms**](http://npm.im/ms) for converting time formats (7d, 1w, 10h) into milliseconds,
 so feel free to go crazy. Defaults to **1 week**.
-1. `--server`: String &mdash; The server to scrape the breaches API and resolve images to. For example, you can specify `--server=https://monitor.firefox.com` (default) and it will check against the production server, or you can specify `--server=https://fx-breach-alerts.herokuapp.com` to check against the development/l10n Heroku server. Defaults to "https://monitor.firefox.com".
 
 **NOTE:** When specifying the `--since` argument, the script will run `Math.abs()` on the value returned by `ms()`, so essentially "-7d" and "7d" are equivalent.
 
