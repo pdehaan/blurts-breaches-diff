@@ -4,9 +4,10 @@ const {args, getBreaches} = require("./index");
 
 const flags = args();
 
-main(flags.since, flags.server);
+main(flags);
 
-async function main(modifiedSince, server) {
-  const recentBreaches = await getBreaches(modifiedSince, server);
+async function main(opts) {
+  const recentBreaches = await getBreaches(opts.modifiedSince, opts.server);
+  // eslint-disable-next-line no-console
   console.log(JSON.stringify(recentBreaches, null, 2));
 }
