@@ -8,6 +8,7 @@
     "url": "https://github.com/pdehaan/blurts-breaches-diff/issues"
   },
   "dependencies": {
+    "arg": "2.0.1",
     "check-links": "1.1.4",
     "got": "9.3.2",
     "ms": "2.1.1"
@@ -21,7 +22,11 @@
     "url": "git+https://github.com/pdehaan/blurts-breaches-diff.git"
   },
   "scripts": {
+    "lint": "eslint .",
     "start": "node cli",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "eslint": "5.9.0"
   }
 }
