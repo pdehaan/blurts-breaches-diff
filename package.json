@@ -23,8 +23,9 @@
   },
   "scripts": {
     "lint": "eslint .",
+    "pretest": "npm run lint",
     "start": "node cli",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node cli"
   },
   "devDependencies": {
     "eslint": "5.9.0"
