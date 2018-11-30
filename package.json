@@ -1,7 +1,7 @@
 {
   "name": "blurts-breaches-diff",
   "description": "JSON diff of breaches",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Peter deHaan <peter@deseloper.com> (https://about.me/peterdehaan)",
   "bin": "cli.js",
   "bugs": {
