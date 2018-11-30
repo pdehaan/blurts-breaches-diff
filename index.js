@@ -100,7 +100,7 @@ async function getBreaches(modifiedSince = "-1w", server = envs.get("prod")) {
 
 async function checkLogos(breaches, server) {
   const LOGO_URI_PREFIX = `${server}/img/logos`;
-  const links = breaches.reduce((_links, { Name, LogoPath }) => {
+  const links = breaches.reduce((_links, { LogoPath }) => {
     const [img] = LogoPath.match(/[^/]*$/);
     img && _links.push(`${LOGO_URI_PREFIX}/${img}`);
     return _links;
