@@ -9,6 +9,28 @@ envs.set("dev", "https://fx-breach-alerts.herokuapp.com");
 envs.set("stage", "https://blurts-server.stage.mozaws.net");
 envs.set("prod", "https://monitor.firefox.com");
 
+const defaults = new Map();
+defaults.set("env", "prod");
+defaults.set("server", envs.get("prod"));
+defaults.set("since", "1w");
+
+function envToServer(env) {
+  switch (env) {
+    case "l10n":
+    case "dev":
+    case "development":
+      return envs.get("dev");
+    case "stage":
+      return envs.get("stage");
+    case "prod":
+    case "production":
+      return envs.get("prod");
+    default:
+      console.error(`Unknown --env: ${env}`);
+  }
+  return defaults.get("server");
+}
+
 function args() {
   const flags = arg(
     {
@@ -20,35 +42,18 @@ function args() {
   );
 
   if (flags["--env"]) {
-    const env = flags["--env"];
-    switch (env) {
-      case "l10n":
-      case "dev":
-      case "development":
-        flags["--server"] = envs.get("dev");
-        break;
-      case "stage":
-        flags["--server"] = envs.get("stage");
-        break;
-      case "prod":
-      case "production":
-        flags["--sever"] = envs.get("prod");
-        break;
-      default:
-        // eslint-disable-next-line no-console
-        console.error(`Unknown --env: ${env}`);
-    }
+    flags["--server"] = envToServer(flags["--env"]);
   }
 
   return {
-    server: flags["--server"] || envs.get("prod"),
-    since: flags["--since"] || flags._[0] || "-7d"
+    server: flags["--server"] || defaults.get("server"),
+    since: flags["--since"] || flags._[0] || defaults.get("since")
   };
 }
 
 async function getBreaches(
-  modifiedSince = "-1w",
-  server = envs.get("prod")
+  modifiedSince = defaults.get("since"),
+  server = defaults.get("server")
 ) {
   const now = new Date();
   const BREACH_API_URL = `${server}/hibp/breaches`;
