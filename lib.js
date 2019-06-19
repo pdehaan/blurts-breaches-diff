@@ -56,7 +56,7 @@ async function getBreaches(
   server = defaults.get("server")
 ) {
   const now = new Date();
-  const BREACH_API_URL = `${server}/hibp/breaches`;
+  const BREACH_API_URL = `https://haveibeenpwned.com/api/v2/breaches`;
   const BREACH_VERSION_URL = `${server}/__version__`;
   const sinceMs = Math.abs(ms(modifiedSince));
   const sinceDate = new Date(now - sinceMs);

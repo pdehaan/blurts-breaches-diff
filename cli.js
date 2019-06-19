@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { args, getBreaches } = require("./index");
+const { args, getBreaches } = require("./lib");
 
 const flags = args();
 
