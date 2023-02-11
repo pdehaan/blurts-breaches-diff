@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "arg": "^4.1.0",
-    "check-links": "^1.1.7",
-    "got": "^11.8.5",
+    "check-links": "^2.1.2",
+    "got": "^12.5.3",
     "ms": "^2.1.2"
   },
   "homepage": "https://github.com/pdehaan/blurts-breaches-diff#readme",
